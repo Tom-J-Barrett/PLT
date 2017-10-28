@@ -1,19 +1,18 @@
 %%
-BEGINING    {printf("%s: is a start keyword", yytext);}
-BODY        {printf("%s: is a body keyword", yytext);}
-PRINT       {printf("%s: is a print keyword", yytext);}      
-" ([A-Za-z]|[0-9])".   {return PRINTTEXT}
-INPUT       {return INPUTKEYWORD}
-" ([A-Za-z]|[0-9])".   {return INPUTTEXT}
-MOVE    {return MOVEKEYWORD}
-ADD     {return ADDKEYWORD}
-END.    {return ENDKEYWORD}
-([X]* ([A-Za-z]|[0-9]))    {return VARIABLESIZE}
-([A-Za-z]|[0-9])*   {return VARIABLENAME}
-.       {return FULLSTOP}
+BEGINING                {printf("%s: is a start keyword\n", yytext);}
+BODY                    {printf("%s: is a body keyword\n", yytext);}
+PRINT                   {printf("%s: is a print keyword\n", yytext);}      
+INPUT                   {printf("%s: is an input keyword\n", yytext);}
+MOVE                    {printf("%s: is a move keyword\n", yytext);}
+ADD                     {printf("%s: is an add keyword\n", yytext);}
+END                     {printf("%s: is an end keyword\n", yytext);}
+[X]*                    {printf("%s: is a variable size\n", yytext);}
+[.]                     {printf("%s: is a fullstop\n", yytext);}
+^[A-Z][A-Z0-9-]*        {printf("%s: is a variable name\n", yytext);}
+.                       {printf("%s: is unknown\n", yytext);}
 %%
 
-main() {
-    yylex();
+int yywrap(void) {
+    return 1;
 }
                       
