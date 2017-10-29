@@ -1,0 +1,58 @@
+BEGINING :is a start keyword
+. :is a full stop
+
+
+XXX :is a variable size
+ XY-1 :is a variable name
+. :is a full stop
+
+XXXX :is a variable size
+ Y :is a variable name
+. :is a full stop
+
+XXXX :is a variable size
+ Z :is a variable name
+. :is a full stop
+
+
+BODY :is a body keyword
+. :is a full stop
+
+PRINT :is a print keyword
+ "Please enter a number? " :can be printed
+. :is a full stop
+
+INPUT :is an input keyword
+ Y :is a variable name
+. :is a full stop
+
+
+MOVE :is a move keyword
+ 15 :this value is an integer
+ TO :is a to keyword
+ Z :is a variable name
+. :is a full stop
+
+ADD :is an add keyword
+ Y :is a variable name
+ TO :is a to keyword
+ Z :is a variable name
+. :is a full stop
+
+PRINT :is a print keyword
+ XY-1 :is a variable name
+; :is a semi colon
+" + " :can be printed
+; :is a semi colon
+Y :is a variable name
+; :is a semi colon
+"=" :can be printed
+; :is a semi colon
+Z :is a variable name
+. :is a full stop
+
+
+END :is an end keyword
+. :is a full stop
+ 
+
