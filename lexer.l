@@ -19,7 +19,7 @@ TO                      {printf("%s: is a to keyword\n", yytext);}
 END                     {printf("%s: is an end keyword\n", yytext);}
 ^X{1,10}                {printf("%s: is a variable size\n", yytext);}
 {DIGIT}+                {printf("%s: this value is an integer\n", yytext); }
-{ALPHA}{IDEN}+          {printf("%s: is a variable name\n", yytext);}
+{ALPHA}{IDEN}*          {printf("%s: is a variable name\n", yytext);}
 ;                       {printf("%s: is a semi colon\n", yytext);}
 \".*\"                  {printf("%s: can be printed\n", yytext);}
 \.                      {printf("%s: is a full stop\n", yytext);}
