@@ -7,6 +7,7 @@ ALPHA   [A-Za-z]
 ALNUM   [A-Za-z0-9]
 IDEN    [A-Za-z0-9\-]
 STRING  \"(\\.|[^"\\])*\" 
+InVar  [A-Za-z-]
 
 %%
 [\t\n ]+                {}
@@ -22,6 +23,7 @@ END                     {printf("%s:is an end keyword\n", yytext);}
 {DIGIT}+                {printf("%s:this value is an integer\n", yytext);}
 {ALPHA}{IDEN}*          {printf("%s:is a variable name\n", yytext);}
 ;                       {printf("%s:is a semi colon\n", yytext);}
+{DIGIT}+{InVar}+{IDEN}* {printf("%s:is an invalid variable name\n", yytext);}
 {STRING}                {printf("%s:can be printed\n", yytext);}
 \.                      {printf("%s:is a full stop\n", yytext);}
 .                       {printf("%s:is invalid syntax\n", yytext);}
