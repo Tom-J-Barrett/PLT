@@ -7,7 +7,7 @@ ALPHA   [A-Za-z]
 ALNUM   [A-Za-z0-9]
 IDEN    [A-Za-z0-9\-]
 STRING  \"(\\.|[^"\\])*\" 
-InVar  [A-Za-z-]
+InVar   [A-Za-z-]
 
 %%
 [\t\n ]+                {}
