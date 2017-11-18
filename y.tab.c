@@ -18,12 +18,18 @@
 #define YYPURE 0
 
 #line 2 "parser.y"
+void yyerror(char *s);
 #include <stdio.h>
 #include <stdlib.h>
-int symbolTable[100];
-int symVal(char symbol);
-int updateSym(char symbol, int val);
-#line 27 "y.tab.c"
+struct VAR {
+    int size;
+    char name;
+    int value;
+};
+struct VAR symbolTable[100];
+void addSymbol(char size, char name);
+int updateSymbol(char symbol, int val);
+#line 33 "y.tab.c"
 
 #if ! defined(YYSTYPE) && ! defined(YYSTYPE_IS_DECLARED)
 /* Default: YYSTYPE is the semantic value type. */
@@ -81,35 +87,66 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,
+    0,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+    1,    1,    1,    1,    1,    2,    3,    3,    3,    3,
 };
 static const YYINT yylen[] = {                            2,
-    1,
+    3,    1,    2,    3,    3,    5,    5,    2,    2,    3,
+    4,    4,    6,    6,    3,    3,    1,    1,    3,    3,
 };
 static const YYINT yydefred[] = {                         0,
-    1,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    2,    3,    0,    0,    0,    0,    0,    0,    8,
+    0,    0,    0,    0,    0,    0,    0,    9,    0,    0,
+    4,    5,    0,    0,   16,   10,    0,    0,    0,    0,
+   15,   20,   19,    0,    0,   11,   12,    0,    0,    6,
+    7,    0,    0,   13,   14,
 };
 static const YYINT yydgoto[] = {                          2,
+   11,   12,   16,
 };
-static const YYINT yysindex[] = {                      -257,
-    0,    0,
+static const YYINT yysindex[] = {                      -252,
+ -255,    0, -258, -254, -249, -245, -243, -242, -247, -241,
+ -250,    0,    0, -240, -239, -244, -238, -233, -232,    0,
+ -237, -236, -249, -235, -230, -229, -234,    0, -249, -249,
+    0,    0, -228, -227,    0,    0, -226, -225, -222, -221,
+    0,    0,    0, -224, -223,    0,    0, -218, -217,    0,
+    0, -220, -219,    0,    0,
 };
 static const YYINT yyrindex[] = {                         0,
-    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+   43,    0,    0, -216, -215,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
+    0,   33,  -10,
 };
-#define YYTABLESIZE 0
-static const YYINT yytable[] = {                          1,
+#define YYTABLESIZE 56
+static const YYINT yytable[] = {                          4,
+    5,    6,    7,    8,    1,    9,   10,   22,   23,   24,
+   25,   26,   37,   27,   10,    3,   13,   14,   42,   43,
+   15,   17,   18,   20,   19,   21,   31,   29,   30,   33,
+   34,   38,   32,   35,   36,   39,   41,   40,   44,   45,
+   48,   49,    1,   28,   46,   47,   50,   51,   52,   53,
+   54,   55,    0,    0,   18,   17,
 };
-static const YYINT yycheck[] = {                        257,
+static const YYINT yycheck[] = {                        258,
+  259,  260,  261,  262,  257,  264,  265,  258,  259,  260,
+  261,  262,   23,  264,  265,  271,  271,  267,   29,   30,
+  270,  267,  266,  271,  267,  267,  271,  268,  268,  263,
+  263,  267,  271,  271,  271,  266,  271,  267,  267,  267,
+  263,  263,    0,   11,  271,  271,  271,  271,  267,  267,
+  271,  271,   -1,   -1,  271,  271,
 };
 #define YYFINAL 2
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
 #define YYMAXTOKEN 272
-#define YYUNDFTOKEN 275
+#define YYUNDFTOKEN 278
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -122,11 +159,30 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"START","BODY","PRINT","INPUT",
 "MOVE","ADD","TO","END","VARSIZE","INTEGER","VARNAME","SEMICOLON","INVALIDNAME",
-"STRING","FULLSTOP","INVALID",0,0,"illegal-symbol",
+"STRING","FULLSTOP","INVALID",0,0,0,0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
-"$accept : line",
-"line : START",
+"$accept : startOfProgram",
+"startOfProgram : START FULLSTOP line",
+"line : declaration",
+"line : BODY FULLSTOP",
+"line : PRINT toPrint FULLSTOP",
+"line : INPUT VARNAME FULLSTOP",
+"line : MOVE INTEGER TO VARNAME FULLSTOP",
+"line : ADD VARNAME TO VARNAME FULLSTOP",
+"line : END FULLSTOP",
+"line : line declaration",
+"line : line BODY FULLSTOP",
+"line : line PRINT toPrint FULLSTOP",
+"line : line INPUT VARNAME FULLSTOP",
+"line : line MOVE INTEGER TO VARNAME FULLSTOP",
+"line : line ADD VARNAME TO VARNAME FULLSTOP",
+"line : line END FULLSTOP",
+"declaration : VARSIZE VARNAME FULLSTOP",
+"toPrint : STRING",
+"toPrint : VARNAME",
+"toPrint : STRING SEMICOLON toPrint",
+"toPrint : VARNAME SEMICOLON toPrint",
 
 };
 #endif
@@ -164,14 +220,30 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 33 "parser.y"
- 
+#line 64 "parser.y"
+
+int getIndex(char token) {
+    return 0;
+}
+
+void addSymbol(char size, char name) {
+    return 0;
+}
+
+int updateSymbol(char symbol, int val) {
+    return 0;
+} 
+
 int main(void) {
     return yyparse();
 }
 
+void yyerror (char *s) {
+    fprintf (stderr, "%s\n", s);
+}
 
-#line 175 "y.tab.c"
+
+#line 247 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -374,10 +446,86 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 29 "parser.y"
-	{printf("STARTED");}
+#line 35 "parser.y"
+	{;}
 break;
-#line 381 "y.tab.c"
+case 2:
+#line 38 "parser.y"
+	{;}
+break;
+case 3:
+#line 39 "parser.y"
+	{;}
+break;
+case 4:
+#line 40 "parser.y"
+	{;}
+break;
+case 5:
+#line 41 "parser.y"
+	{;}
+break;
+case 6:
+#line 42 "parser.y"
+	{;}
+break;
+case 7:
+#line 43 "parser.y"
+	{;}
+break;
+case 8:
+#line 44 "parser.y"
+	{exit(0);}
+break;
+case 9:
+#line 45 "parser.y"
+	{;}
+break;
+case 10:
+#line 46 "parser.y"
+	{;}
+break;
+case 11:
+#line 47 "parser.y"
+	{;}
+break;
+case 12:
+#line 48 "parser.y"
+	{;}
+break;
+case 13:
+#line 49 "parser.y"
+	{;}
+break;
+case 14:
+#line 50 "parser.y"
+	{;}
+break;
+case 15:
+#line 51 "parser.y"
+	{exit(0);}
+break;
+case 16:
+#line 54 "parser.y"
+	{;}
+break;
+case 17:
+#line 57 "parser.y"
+	{;}
+break;
+case 18:
+#line 58 "parser.y"
+	{;}
+break;
+case 19:
+#line 59 "parser.y"
+	{;}
+break;
+case 20:
+#line 60 "parser.y"
+	{;}
+break;
+#line 529 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
