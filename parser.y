@@ -1,22 +1,38 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+int symbolTable[100];
+int symVal(char symbol);
+int updateSym(char symbol, int val);
 %}
-%token NAME NUMBER
+
+%start line
+%token START
+%token BODY
+%token PRINT
+%token INPUT
+%token MOVE
+%token ADD
+%token TO
+%token END
+%token VARSIZE
+%token INTEGER
+%token VARNAME
+%token SEMICOLON
+%token INVALIDNAME
+%token STRING
+%token FULLSTOP
+%token INVALID
+
 %%
-statement: NAME '=' expression
-                 | expression            { printf("= %d\n", $1); }
-                         ;
-expression: expression '+' NUMBER { $$ = $1 + $3; }
-                  |   expression '-' NUMBER { $$ = $1 - $3; }
-                          |   NUMBER                { $$ = $1; }
-                                  ;
+
+line       :START {printf("STARTED");};
+
+
 %%
-int yyerror(char *s) {
-   fprintf(stderr, "%s\n", s);
-      return 0;
+ 
+int main(void) {
+    return yyparse();
 }
 
-int main(void) {
-        yyparse();
-        return 0;
-}
+

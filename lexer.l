@@ -1,5 +1,5 @@
 %{
-#include<stdio.h>
+#include "y.tab.h"
 %}
 
 DIGIT   [0-9]
@@ -11,28 +11,25 @@ InVar   [A-Za-z-]
 
 %%
 [\t\n ]+                {}
-BEGINING                {printf("%s:is a start keyword\n", yytext);}
-BODY                    {printf("%s:is a body keyword\n", yytext);}
-PRINT                   {printf("%s:is a print keyword\n", yytext);}      
-INPUT                   {printf("%s:is an input keyword\n", yytext);}
-MOVE                    {printf("%s:is a move keyword\n", yytext);}
-ADD                     {printf("%s:is an add keyword\n", yytext);}
-TO                      {printf("%s:is a to keyword\n", yytext);}
-END                     {printf("%s:is an end keyword\n", yytext);}
-[X]+                    {printf("%s:is a variable size\n", yytext);}
-{DIGIT}+                {printf("%s:this value is an integer\n", yytext);}
-{ALPHA}{IDEN}*          {printf("%s:is a variable name\n", yytext);}
-;                       {printf("%s:is a semi colon\n", yytext);}
-{DIGIT}+{InVar}+{IDEN}* {printf("%s:is an invalid variable name\n", yytext);}
-{STRING}                {printf("%s:can be printed\n", yytext);}
-\.                      {printf("%s:is a full stop\n", yytext);}
-.                       {printf("%s:is invalid syntax\n", yytext);}
+BEGINING                {return START;}
+BODY                    {return BODY;}
+PRINT                   {return PRINT;}      
+INPUT                   {return INPUT;}
+MOVE                    {return MOVE;}
+ADD                     {return ADD;}
+TO                      {return TO;}
+END                     {return END;}
+[X]+                    {return VARSIZE;}
+{DIGIT}+                {return INTEGER;}
+{ALPHA}{IDEN}*          {return VARNAME;}
+;                       {return SEMICOLON;}
+{DIGIT}+{InVar}+{IDEN}* {return INVALIDNAME;}
+{STRING}                {return STRING;}
+\.                      {return FULLSTOP;}
+.                       {return INVALID;}
 %%
 
-int main() {
-    yylex();
-    exit(0);
+int yywrap(void) {
+    return 1;  
 }
-
-int yywrap(){}
                       

@@ -1,0 +1,16 @@
+#define START 1
+#define BODY 2
+#define PRINT 3
+#define INPUT 4
+#define MOVE 5
+#define ADD 6
+#define TO 7
+#define END 8
+#define VARSIZE 9
+#define INTEGER 10
+#define VARNAME 11
+#define SEMICOLON 12
+#define INVALIDNAME 13
+#define STRING 14
+#define FULLSTOP 15
+#define INVALID 16

@@ -503,7 +503,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "lexer.l"
 #line 2 "lexer.l"
-#include<stdio.h>
+#include "y.tab.h"
 #line 508 "lex.yy.c"
 
 #define INITIAL 0
@@ -790,83 +790,83 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 14 "lexer.l"
-{printf("%s:is a start keyword\n", yytext);}
+{return START;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 15 "lexer.l"
-{printf("%s:is a body keyword\n", yytext);}
+{return BODY;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 16 "lexer.l"
-{printf("%s:is a print keyword\n", yytext);}      
+{return PRINT;}      
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 17 "lexer.l"
-{printf("%s:is an input keyword\n", yytext);}
+{return INPUT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 18 "lexer.l"
-{printf("%s:is a move keyword\n", yytext);}
+{return MOVE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 19 "lexer.l"
-{printf("%s:is an add keyword\n", yytext);}
+{return ADD;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 20 "lexer.l"
-{printf("%s:is a to keyword\n", yytext);}
+{return TO;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 21 "lexer.l"
-{printf("%s:is an end keyword\n", yytext);}
+{return END;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 22 "lexer.l"
-{printf("%s:is a variable size\n", yytext);}
+{return VARSIZE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 23 "lexer.l"
-{printf("%s:this value is an integer\n", yytext);}
+{return INTEGER;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 24 "lexer.l"
-{printf("%s:is a variable name\n", yytext);}
+{return VARNAME;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 25 "lexer.l"
-{printf("%s:is a semi colon\n", yytext);}
+{return SEMICOLON;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 26 "lexer.l"
-{printf("%s:is an invalid variable name\n", yytext);}
+{return INVALIDNAME;}
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
 #line 27 "lexer.l"
-{printf("%s:can be printed\n", yytext);}
+{return STRING;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 28 "lexer.l"
-{printf("%s:is a full stop\n", yytext);}
+{return FULLSTOP;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 29 "lexer.l"
-{printf("%s:is invalid syntax\n", yytext);}
+{return INVALID;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
@@ -1878,11 +1878,8 @@ void yyfree (void * ptr )
 
 
 
-int main() {
-    yylex();
-    exit(0);
+int yywrap(void) {
+    return 1;  
 }
-
-int yywrap(){}
                       
 
