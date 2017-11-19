@@ -21,15 +21,18 @@
 void yyerror(char *s);
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 struct VAR {
-    int size;
+    char size;
     char name;
-    int value;
+    char value;
 };
 struct VAR symbolTable[100];
 void addSymbol(char size, char name);
-int updateSymbol(char symbol, int val);
-#line 33 "y.tab.c"
+int updateSymbol(char name, int val);
+bool isSymbolDeclared(char name);
+int sizeOfSymbolTable();
+#line 36 "y.tab.c"
 
 #if ! defined(YYSTYPE) && ! defined(YYSTYPE_IS_DECLARED)
 /* Default: YYSTYPE is the semantic value type. */
@@ -220,30 +223,53 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 64 "parser.y"
+#line 67 "parser.y"
 
 int getIndex(char token) {
     return 0;
 }
 
 void addSymbol(char size, char name) {
-    return 0;
+    printf("%c", name);
+    if(isSymbolDeclared(name) == false) {
+        struct VAR newVariable;
+        newVariable.size = size;
+        newVariable.name = name;
+        symbolTable[0] = newVariable;
+    }
+    else if(name == NULL) {
+        printf("Already Declared");
+        exit(0);
+    }
 }
 
-int updateSymbol(char symbol, int val) {
+int updateSymbol(char name, int val) {
     return 0;
 } 
+
+bool isSymbolDeclared(char name) {
+    for(int i = 0; i < sizeOfSymbolTable(); i++) {
+        if(symbolTable[0].name == name) {
+             return true;
+        }
+    }
+    return false;
+}
+
+int sizeOfSymbolTable() {
+    return (sizeof(symbolTable) / sizeof(symbolTable[0]));
+}
 
 int main(void) {
     return yyparse();
 }
 
 void yyerror (char *s) {
-    fprintf (stderr, "%s\n", s);
+    fprintf(stderr, "%s\n", s);
 }
 
 
-#line 247 "y.tab.c"
+#line 273 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -446,86 +472,86 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 35 "parser.y"
-	{;}
-break;
-case 2:
 #line 38 "parser.y"
 	{;}
 break;
-case 3:
-#line 39 "parser.y"
-	{;}
-break;
-case 4:
-#line 40 "parser.y"
-	{;}
-break;
-case 5:
+case 2:
 #line 41 "parser.y"
 	{;}
 break;
-case 6:
+case 3:
 #line 42 "parser.y"
 	{;}
 break;
-case 7:
+case 4:
 #line 43 "parser.y"
 	{;}
 break;
-case 8:
+case 5:
 #line 44 "parser.y"
-	{exit(0);}
+	{;}
 break;
-case 9:
+case 6:
 #line 45 "parser.y"
 	{;}
 break;
-case 10:
+case 7:
 #line 46 "parser.y"
 	{;}
 break;
-case 11:
+case 8:
 #line 47 "parser.y"
-	{;}
+	{exit(0);}
 break;
-case 12:
+case 9:
 #line 48 "parser.y"
 	{;}
 break;
-case 13:
+case 10:
 #line 49 "parser.y"
 	{;}
 break;
-case 14:
+case 11:
 #line 50 "parser.y"
 	{;}
 break;
-case 15:
+case 12:
 #line 51 "parser.y"
+	{;}
+break;
+case 13:
+#line 52 "parser.y"
+	{;}
+break;
+case 14:
+#line 53 "parser.y"
+	{;}
+break;
+case 15:
+#line 54 "parser.y"
 	{exit(0);}
 break;
 case 16:
-#line 54 "parser.y"
-	{;}
+#line 57 "parser.y"
+	{printf("%d",yystack.l_mark[-2]);}
 break;
 case 17:
-#line 57 "parser.y"
-	{;}
-break;
-case 18:
-#line 58 "parser.y"
-	{;}
-break;
-case 19:
-#line 59 "parser.y"
-	{;}
-break;
-case 20:
 #line 60 "parser.y"
 	{;}
 break;
-#line 529 "y.tab.c"
+case 18:
+#line 61 "parser.y"
+	{;}
+break;
+case 19:
+#line 62 "parser.y"
+	{;}
+break;
+case 20:
+#line 63 "parser.y"
+	{;}
+break;
+#line 555 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

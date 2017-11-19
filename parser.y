@@ -2,14 +2,17 @@
 void yyerror(char *s);
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 struct VAR {
-    int size;
+    char size;
     char name;
-    int value;
+    char value;
 };
 struct VAR symbolTable[100];
 void addSymbol(char size, char name);
-int updateSymbol(char symbol, int val);
+int updateSymbol(char name, int val);
+bool isSymbolDeclared(char name);
+int sizeOfSymbolTable();
 %}
 
 %start startOfProgram
@@ -51,7 +54,7 @@ line           :declaration    {;}
                |line END FULLSTOP {exit(0);} 
                ;
 
-declaration    :VARSIZE VARNAME FULLSTOP {;}
+declaration    :VARSIZE VARNAME FULLSTOP {printf("%d",$1);}
                ;
 
 toPrint        :STRING {;}
@@ -67,19 +70,42 @@ int getIndex(char token) {
 }
 
 void addSymbol(char size, char name) {
-    return 0;
+    printf("%c", name);
+    if(isSymbolDeclared(name) == false) {
+        struct VAR newVariable;
+        newVariable.size = size;
+        newVariable.name = name;
+        symbolTable[0] = newVariable;
+    }
+    else if(name == NULL) {
+        printf("Already Declared");
+        exit(0);
+    }
 }
 
-int updateSymbol(char symbol, int val) {
+int updateSymbol(char name, int val) {
     return 0;
 } 
+
+bool isSymbolDeclared(char name) {
+    for(int i = 0; i < sizeOfSymbolTable(); i++) {
+        if(symbolTable[0].name == name) {
+             return true;
+        }
+    }
+    return false;
+}
+
+int sizeOfSymbolTable() {
+    return (sizeof(symbolTable) / sizeof(symbolTable[0]));
+}
 
 int main(void) {
     return yyparse();
 }
 
 void yyerror (char *s) {
-    fprintf (stderr, "%s\n", s);
+    fprintf(stderr, "%s\n", s);
 }
 
 

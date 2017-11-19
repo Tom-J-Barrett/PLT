@@ -7,5 +7,5 @@ PRINT "LIJGG".
 INPUT Y.
 MOVE 15 TO Z.
 ADD Y TO Z.
-PRINT T;" + ";Y;" = ";Z.
+PRINT X;" + ";Y;" = ";Z.
 END.
