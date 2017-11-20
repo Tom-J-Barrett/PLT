@@ -1,5 +1,6 @@
 %{
 #include "y.tab.h"
+#include <stdio.h>
 %}
 
 DIGIT   [0-9]
@@ -11,17 +12,17 @@ InVar   [A-Za-z-]
 
 %%
 [\t\n ]+                {}
-BEGINING                {return START;}
-BODY                    {return BODY;}
-PRINT                   {return PRINT;}      
-INPUT                   {return INPUT;}
-MOVE                    {return MOVE;}
-ADD                     {return ADD;}
-TO                      {return TO;}
-END                     {return END;}
-[X]+                    {return VARSIZE;}
-{DIGIT}+                {return INTEGER;}
-{ALPHA}{IDEN}*          {return VARNAME;}
+(?i:BEGINING)           {return START;}
+(?i:BODY)               {return BODY;}
+(?i:PRINT)              {return PRINT;}      
+(?i:INPUT)              {return INPUT;}
+(?i:MOVE)               {return MOVE;}
+(?i:ADD)                {return ADD;}
+(?i:TO)                 {return TO;}
+(?i:END)                {return END;}
+[X]+                    {yylval.size = yytext[0]; return VARSIZE;}
+{DIGIT}+                {yylval.num = atoi(yytext); return INTEGER;}
+{ALPHA}{IDEN}*          {yylval.name = yytext[0]; return VARNAME;}
 ;                       {return SEMICOLON;}
 {DIGIT}+{InVar}+{IDEN}* {return INVALIDNAME;}
 {STRING}                {return STRING;}
