@@ -7,7 +7,6 @@ void yyerror(char *s);
 struct VAR {
     int *size;
     char name;
-    char value;
 };
 struct VAR symbolTable[100];
 void addVariable(int *size, char name);
@@ -38,8 +37,10 @@ int sizeOfSymbolTable();
 
 %%
 
-startOfProgram  :START FULLSTOP program END FULLSTOP    {exit(0);}
-                |START FULLSTOP END FULLSTOP {exit(0);}
+startOfProgram  :START FULLSTOP program ending {;}
+                ;
+
+ending          :END FULLSTOP {exit(0);}
                 ;
 
 program         :declaration {;}
@@ -104,8 +105,10 @@ void moveVarToVariable(char name, char nameToUpdate) {
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
-        if(symbolTable[i].size == symbolTable[j].size) {
-            symbolTable[j].value = symbolTable[i].value;
+        if(!(symbolTable[i].size <= symbolTable[j].size)) {
+            printf("You are attempting to move to a variable that is of smaller
+                    size");
+            exit(0);    
         }
     }
 }
@@ -113,10 +116,7 @@ void moveVarToVariable(char name, char nameToUpdate) {
 void moveValToVariable(int num, char name) { 
     if(isVariableDeclared(name)) {
         int i = getIndex(name);
-        if(symbolTable[i].size == numDigits(num)){
-            symbolTable[i].value = num;
-        }
-        else {
+        if(!(symbolTable[i].size == numDigits(num))){
             printf("Variable isn't compatible with this integer size");
         }
     }
