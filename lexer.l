@@ -20,9 +20,9 @@ InVar   [A-Za-z-]
 (?i:ADD)                {return ADD;}
 (?i:TO)                 {return TO;}
 (?i:END)                {return END;}
-[X]+                    {yylval.size = yytext[0]; return VARSIZE;}
+[X]+                    {yylval.size = sizeOfChar(yytext); return VARSIZE;}
 {DIGIT}+                {yylval.num = atoi(yytext); return INTEGER;}
-{ALPHA}{IDEN}*          {yylval.name = yytext[0]; return VARNAME;}
+{ALPHA}{IDEN}*          {yylval.name = yytext; return VARNAME;}
 ;                       {return SEMICOLON;}
 {DIGIT}+{InVar}+{IDEN}* {return INVALIDNAME;}
 {STRING}                {return STRING;}
@@ -33,4 +33,7 @@ InVar   [A-Za-z-]
 int yywrap(void) {
     return 1;  
 }
-                      
+
+int sizeOfChar(char* size) {
+    return strlen(size);
+}                      

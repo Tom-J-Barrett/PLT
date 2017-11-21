@@ -5,19 +5,19 @@ void yyerror(char *s);
 #include <stdbool.h>
 #include <string.h>
 struct VAR {
-    char size;
+    int *size;
     char name;
     char value;
 };
 struct VAR symbolTable[100];
-void addVariable(char size, char name);
+void addVariable(int *size, char name);
 void moveValToVariable(int num, char name);
 void moveVarToVariable(char name, char nameToUpdate);
 bool isVariableDeclared(char name);
 int sizeOfSymbolTable();
 %}
 
-%union {char size; char name; int num;} 
+%union {int size; char name; int num;} 
 %start startOfProgram
 %token START
 %token BODY
@@ -81,11 +81,10 @@ int getIndex(char name) {
     }
 }
 
-void addVariable(char size, char name) {
-    //printf("%c", size);
+void addVariable(int *size, char name) {
     if(isVariableDeclared(name) == false) {
         struct VAR newVariable;
-        newVariable.size = size;
+        newVariable.size = *size;
         newVariable.name = name;
         symbolTable[0] = newVariable;
     }
@@ -105,9 +104,7 @@ void moveVarToVariable(char name, char nameToUpdate) {
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
-        int sizeName = sizeof(symbolTable[i].size) / sizeof(char);
-        int sizeNTU = sizeof(symbolTable[j].size) / sizeof(char);
-        if(sizeName == sizeNTU) {
+        if(symbolTable[i].size == symbolTable[j].size) {
             symbolTable[j].value = symbolTable[i].value;
         }
     }
@@ -116,8 +113,7 @@ void moveVarToVariable(char name, char nameToUpdate) {
 void moveValToVariable(int num, char name) { 
     if(isVariableDeclared(name)) {
         int i = getIndex(name);
-        int variableSize = sizeof(symbolTable[i].size) / sizeof(char);
-        if(variableSize == numDigits(num)){
+        if(symbolTable[i].size == numDigits(num)){
             symbolTable[i].value = num;
         }
         else {
