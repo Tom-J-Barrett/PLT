@@ -24,17 +24,16 @@ void yyerror(char *s);
 #include <stdbool.h>
 #include <string.h>
 struct VAR {
-    int *size;
+    int size;
     char name;
-    char value;
 };
 struct VAR symbolTable[100];
-void addVariable(int *size, char name);
+void addVariable(int size, char name);
 void moveValToVariable(int num, char name);
 void moveVarToVariable(char name, char nameToUpdate);
 bool isVariableDeclared(char name);
 int sizeOfSymbolTable();
-#line 20 "parser.y"
+#line 19 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -43,7 +42,7 @@ int sizeOfSymbolTable();
 #define YYSTYPE_IS_DECLARED 1
 typedef union {int size; char name; int num;} YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 47 "y.tab.c"
+#line 46 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -95,73 +94,68 @@ extern int YYPARSE_DECL();
 #define YYERRCODE 256
 typedef short YYINT;
 static const YYINT yylhs[] = {                           -1,
-    0,    0,    1,    1,    1,    1,    3,    4,    4,    4,
-    4,    4,    4,    4,    4,    4,    4,    2,    5,    5,
-    5,    5,
+    0,    2,    1,    1,    1,    1,    4,    5,    5,    5,
+    5,    5,    5,    5,    5,    7,    7,    3,    6,    6,
+    6,    6,
 };
 static const YYINT yylen[] = {                            2,
-    5,    4,    1,    2,    1,    2,    3,    3,    3,    5,
-    5,    5,    4,    4,    6,    6,    6,    3,    1,    1,
+    4,    2,    1,    2,    1,    2,    3,    3,    3,    3,
+    5,    4,    4,    4,    6,    3,    3,    3,    1,    1,
     3,    3,
 };
 static const YYINT yydefred[] = {                         0,
-    0,    0,    0,    0,    0,    0,    0,    3,    5,    0,
-    2,    0,    0,    6,    4,    0,    0,    0,    0,    0,
-   18,    1,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    8,    9,    0,    0,    0,
-    0,    0,    0,    0,    0,   22,   21,    0,    0,    0,
-   13,   14,    0,    0,    0,   10,   11,   12,    0,    0,
-    0,   15,   16,   17,
+    0,    0,    0,    0,    0,    0,    3,    5,    0,    0,
+    0,    1,    6,    4,    0,    0,    0,    0,    0,   18,
+    2,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    8,    9,    0,    0,   10,
+    0,    0,    0,    0,    0,   22,   21,   16,   17,    0,
+   12,   13,   14,    0,   11,    0,   15,
 };
 static const YYINT yydgoto[] = {                          2,
-    7,    8,    9,   20,   25,
+    6,   12,    7,    8,   19,   24,   28,
 };
 static const YYINT yysindex[] = {                      -252,
- -270,    0, -258, -268, -245, -236, -256,    0,    0, -241,
-    0, -239, -235,    0,    0, -240, -234, -253, -233, -237,
-    0,    0, -231, -230, -232, -229, -248, -228, -223, -240,
- -226, -238, -224, -240, -240,    0,    0, -222, -221, -220,
- -227, -219, -215, -214, -213,    0,    0, -218, -217, -216,
-    0,    0, -211, -210, -209,    0,    0,    0, -212, -208,
- -207,    0,    0,    0,
+ -257,    0, -255, -246, -241, -258,    0,    0, -242, -244,
+ -243,    0,    0,    0, -266, -237, -254, -236, -238,    0,
+    0, -239, -235, -234, -233, -231, -229, -232, -228, -266,
+ -227, -254, -226, -266, -266,    0,    0, -225, -224,    0,
+ -223, -222, -221, -220, -218,    0,    0,    0,    0, -219,
+    0,    0,    0, -214,    0, -217,    0,
 };
 static const YYINT yyrindex[] = {                         0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0, -254,
-    0,    0, -206, -205,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,    0, -256,    0,
+    0, -244, -216,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-    0,    0,    0,    0,
+    0,    0,    0,    0,    0,    0,    0,
 };
 static const YYINT yygindex[] = {                         0,
-    0,   44,   53,    0,  -18,
+    0,    0,   30,   40,    0,  -19,   15,
 };
-#define YYTABLESIZE 66
+#define YYTABLESIZE 55
 static const YYINT yytable[] = {                          4,
-    3,    4,   10,    7,    1,    5,    6,   13,    6,    7,
-    7,   41,   27,   28,   38,   46,   47,   16,   17,   18,
-   19,   30,   31,   32,   33,   11,   23,   43,   44,   24,
-   12,   21,   26,   29,   39,   22,   34,   35,   36,   40,
-   42,   37,   45,   51,   48,   49,   50,   53,   54,   55,
-   14,   52,   56,   57,   58,   59,   60,   61,   62,   15,
-    0,    0,   63,   64,   20,   19,
+   22,    7,    4,   23,    1,   11,    5,    7,    7,    5,
+   42,   26,   27,    3,   46,   47,   15,   16,   17,   18,
+   30,   31,   32,   33,    9,   10,   20,   21,   34,   25,
+   29,   38,   35,   39,   41,   13,   36,   37,   40,   43,
+   45,   48,   49,   50,   54,   14,   44,    0,   51,   52,
+   53,   55,   56,   57,   19,
 };
 static const YYINT yycheck[] = {                        258,
-  271,  258,  271,  258,  257,  264,  265,  264,  265,  264,
-  265,   30,  266,  267,  263,   34,   35,  259,  260,  261,
-  262,  259,  260,  261,  262,  271,  267,  266,  267,  270,
-  267,  271,  267,  267,  263,  271,  268,  268,  271,  263,
-  267,  271,  267,  271,  267,  267,  267,  263,  263,  263,
-    7,  271,  271,  271,  271,  267,  267,  267,  271,    7,
-   -1,   -1,  271,  271,  271,  271,
+  267,  258,  258,  270,  257,  264,  265,  264,  265,  265,
+   30,  266,  267,  271,   34,   35,  259,  260,  261,  262,
+  259,  260,  261,  262,  271,  267,  271,  271,  268,  267,
+  267,  263,  268,  263,  263,    6,  271,  271,  271,  267,
+  267,  267,  267,  267,  263,    6,   32,   -1,  271,  271,
+  271,  271,  267,  271,  271,
 };
 #define YYFINAL 2
 #ifndef YYDEBUG
 #define YYDEBUG 0
 #endif
 #define YYMAXTOKEN 272
-#define YYUNDFTOKEN 280
+#define YYUNDFTOKEN 282
 #define YYTRANSLATE(a) ((a) > YYMAXTOKEN ? YYUNDFTOKEN : (a))
 #if YYDEBUG
 static const char *const yyname[] = {
@@ -174,12 +168,12 @@ static const char *const yyname[] = {
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"START","BODY","PRINT","INPUT",
 "MOVE","ADD","TO","END","VARSIZE","INTEGER","VARNAME","SEMICOLON","INVALIDNAME",
-"STRING","FULLSTOP","INVALID",0,0,0,0,0,0,0,"illegal-symbol",
+"STRING","FULLSTOP","INVALID",0,0,0,0,0,0,0,0,0,"illegal-symbol",
 };
 static const char *const yyrule[] = {
 "$accept : startOfProgram",
-"startOfProgram : START FULLSTOP program END FULLSTOP",
-"startOfProgram : START FULLSTOP END FULLSTOP",
+"startOfProgram : START FULLSTOP program ending",
+"ending : END FULLSTOP",
 "program : declaration",
 "program : program bodyStatement",
 "program : bodyStatement",
@@ -187,14 +181,14 @@ static const char *const yyrule[] = {
 "bodyStatement : BODY FULLSTOP line",
 "line : PRINT toPrint FULLSTOP",
 "line : INPUT VARNAME FULLSTOP",
-"line : MOVE INTEGER TO VARNAME FULLSTOP",
-"line : MOVE VARNAME TO VARNAME FULLSTOP",
+"line : MOVE movement FULLSTOP",
 "line : ADD VARNAME TO VARNAME FULLSTOP",
 "line : line PRINT toPrint FULLSTOP",
 "line : line INPUT VARNAME FULLSTOP",
-"line : line MOVE INTEGER TO VARNAME FULLSTOP",
-"line : line MOVE VARNAME TO VARNAME FULLSTOP",
+"line : line MOVE movement FULLSTOP",
 "line : line ADD VARNAME TO VARNAME FULLSTOP",
+"movement : INTEGER TO VARNAME",
+"movement : VARNAME TO VARNAME",
 "declaration : VARSIZE VARNAME FULLSTOP",
 "toPrint : STRING",
 "toPrint : VARNAME",
@@ -237,7 +231,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 76 "parser.y"
+#line 79 "parser.y"
 
 int getIndex(char name) {
     for(int i = 0; i < sizeOfSymbolTable(); i++) {
@@ -246,10 +240,10 @@ int getIndex(char name) {
     }
 }
 
-void addVariable(int *size, char name) {
+void addVariable(int size, char name) { 
     if(isVariableDeclared(name) == false) {
         struct VAR newVariable;
-        newVariable.size = *size;
+        newVariable.size = size;
         newVariable.name = name;
         symbolTable[0] = newVariable;
     }
@@ -266,27 +260,28 @@ int numDigits(int n) {
 }
 
 void moveVarToVariable(char name, char nameToUpdate) {
+    printf("%c %c", name, nameToUpdate);
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
-        if(symbolTable[i].size == symbolTable[j].size) {
-            symbolTable[j].value = symbolTable[i].value;
+        if(symbolTable[i].size > symbolTable[j].size) {
+            printf("You are attempting to move to a variable that is of smaller size");
+            exit(0);    
         }
+    } else {
+        printf("Variable isn't declared!\n");
+        exit(0);
     }
 }
 
-void moveValToVariable(int num, char name) { 
+void moveValToVariable(int num, char name) { ;
     if(isVariableDeclared(name)) {
         int i = getIndex(name);
-        if(symbolTable[i].size == numDigits(num)){
-            symbolTable[i].value = num;
-        }
-        else {
+        if(symbolTable[i].size < numDigits(num)){
             printf("Variable isn't compatible with this integer size");
         }
-    }
-    else {
-        printf("Variable isn't declared!");
+    } else {
+        printf("Variable isn't declared!\n");
         exit(0);
     }
 } 
@@ -313,7 +308,7 @@ void yyerror (char *s) {
 }
 
 
-#line 317 "y.tab.c"
+#line 312 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -516,94 +511,94 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 41 "parser.y"
-	{exit(0);}
+#line 40 "parser.y"
+	{;}
 break;
 case 2:
-#line 42 "parser.y"
+#line 43 "parser.y"
 	{exit(0);}
 break;
 case 3:
-#line 45 "parser.y"
-	{;}
-break;
-case 4:
 #line 46 "parser.y"
 	{;}
 break;
-case 5:
+case 4:
 #line 47 "parser.y"
 	{;}
 break;
-case 6:
+case 5:
 #line 48 "parser.y"
 	{;}
 break;
+case 6:
+#line 49 "parser.y"
+	{;}
+break;
 case 7:
-#line 51 "parser.y"
+#line 52 "parser.y"
 	{;}
 break;
 case 8:
-#line 54 "parser.y"
+#line 55 "parser.y"
 	{;}
 break;
 case 9:
-#line 55 "parser.y"
+#line 56 "parser.y"
 	{isVariableDeclared(yystack.l_mark[-1].name);}
 break;
 case 10:
-#line 56 "parser.y"
-	{;}
-break;
-case 11:
 #line 57 "parser.y"
 	{;}
 break;
-case 12:
+case 11:
 #line 58 "parser.y"
 	{;}
 break;
-case 13:
+case 12:
 #line 59 "parser.y"
 	{;}
 break;
-case 14:
+case 13:
 #line 60 "parser.y"
 	{;}
 break;
-case 15:
+case 14:
 #line 61 "parser.y"
-	{moveValToVariable(yystack.l_mark[-3].num, yystack.l_mark[-1].name);}
-break;
-case 16:
-#line 62 "parser.y"
-	{moveVarToVariable(yystack.l_mark[-3].name, yystack.l_mark[-1].name);}
-break;
-case 17:
-#line 63 "parser.y"
 	{;}
 break;
-case 18:
+case 15:
+#line 62 "parser.y"
+	{;}
+break;
+case 16:
+#line 65 "parser.y"
+	{moveValToVariable(yystack.l_mark[-2].num, yystack.l_mark[0].name);}
+break;
+case 17:
 #line 66 "parser.y"
+	{moveVarToVariable(yystack.l_mark[-2].name, yystack.l_mark[0].name);}
+break;
+case 18:
+#line 69 "parser.y"
 	{addVariable(yystack.l_mark[-2].size, yystack.l_mark[-1].name);}
 break;
 case 19:
-#line 69 "parser.y"
-	{;}
-break;
-case 20:
-#line 70 "parser.y"
-	{;}
-break;
-case 21:
-#line 71 "parser.y"
-	{;}
-break;
-case 22:
 #line 72 "parser.y"
 	{;}
 break;
-#line 607 "y.tab.c"
+case 20:
+#line 73 "parser.y"
+	{;}
+break;
+case 21:
+#line 74 "parser.y"
+	{;}
+break;
+case 22:
+#line 75 "parser.y"
+	{;}
+break;
+#line 602 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

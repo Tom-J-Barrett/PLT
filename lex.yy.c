@@ -853,7 +853,7 @@ YY_RULE_SETUP
 case 12:
 YY_RULE_SETUP
 #line 25 "lexer.l"
-{yylval.name = yytext; return VARNAME;}
+{yylval.name = yytext[0]; return VARNAME;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP

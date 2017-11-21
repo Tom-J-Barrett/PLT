@@ -22,7 +22,7 @@ InVar   [A-Za-z-]
 (?i:END)                {return END;}
 [X]+                    {yylval.size = sizeOfChar(yytext); return VARSIZE;}
 {DIGIT}+                {yylval.num = atoi(yytext); return INTEGER;}
-{ALPHA}{IDEN}*          {yylval.name = yytext; return VARNAME;}
+{ALPHA}{IDEN}*          {yylval.name = yytext[0]; return VARNAME;}
 ;                       {return SEMICOLON;}
 {DIGIT}+{InVar}+{IDEN}* {return INVALIDNAME;}
 {STRING}                {return STRING;}
