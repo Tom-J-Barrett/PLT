@@ -843,7 +843,7 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 23 "lexer.l"
-{yylval.size = yytext[0]; return VARSIZE;}
+{yylval.size = sizeOfChar(yytext); return VARSIZE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -1894,5 +1894,8 @@ void yyfree (void * ptr )
 int yywrap(void) {
     return 1;  
 }
-                      
+
+int sizeOfChar(char* size) {
+    return strlen(size);
+}                      
 

@@ -5,19 +5,19 @@ void yyerror(char *s);
 #include <stdbool.h>
 #include <string.h>
 struct VAR {
-    char size;
+    int size;
     char name;
-    char value;
 };
+int indexOfSymbolTable;
 struct VAR symbolTable[100];
-void addVariable(char size, char name);
+void addVariable(int size, char name);
 void moveValToVariable(int num, char name);
 void moveVarToVariable(char name, char nameToUpdate);
 bool isVariableDeclared(char name);
 int sizeOfSymbolTable();
 %}
 
-%union {char size; char name; int num;} 
+%union {int size; char name; int num;} 
 %start startOfProgram
 %token START
 %token BODY
@@ -38,8 +38,10 @@ int sizeOfSymbolTable();
 
 %%
 
-startOfProgram  :START FULLSTOP program END FULLSTOP    {exit(0);}
-                |START FULLSTOP END FULLSTOP {exit(0);}
+startOfProgram  :START FULLSTOP program ending {;}
+                ;
+
+ending          :END FULLSTOP {exit(0);}
                 ;
 
 program         :declaration {;}
@@ -53,14 +55,16 @@ bodyStatement   :BODY FULLSTOP line {;}
 
 line            :PRINT toPrint FULLSTOP         {;}
                 |INPUT VARNAME FULLSTOP {isVariableDeclared($2);}
-                |MOVE INTEGER TO VARNAME FULLSTOP {;}
-                |MOVE VARNAME TO VARNAME FULLSTOP {;}
+                |MOVE movement FULLSTOP {;}
                 |ADD VARNAME TO VARNAME FULLSTOP {;}
                 |line PRINT toPrint FULLSTOP         {;}
                 |line INPUT VARNAME FULLSTOP {;}
-                |line MOVE INTEGER TO VARNAME FULLSTOP {moveValToVariable($3, $5);}
-                |line MOVE VARNAME TO VARNAME FULLSTOP {moveVarToVariable($3, $5);}
+                |line MOVE movement FULLSTOP {;}
                 |line ADD VARNAME TO VARNAME FULLSTOP {;} 
+                ;
+
+movement        :INTEGER TO VARNAME {moveValToVariable($1, $3);}
+                |VARNAME TO VARNAME {moveVarToVariable($1, $3);}
                 ;
 
 declaration     :VARSIZE VARNAME FULLSTOP {addVariable($1, $2);}
@@ -81,16 +85,16 @@ int getIndex(char name) {
     }
 }
 
-void addVariable(char size, char name) {
-    //printf("%c", size);
+void addVariable(int size, char name) { 
     if(isVariableDeclared(name) == false) {
         struct VAR newVariable;
         newVariable.size = size;
         newVariable.name = name;
-        symbolTable[0] = newVariable;
+        symbolTable[indexOfSymbolTable] = newVariable;
+        indexOfSymbolTable++;
     }
     else {
-        printf("Already Declared");
+        printf("Already Declared\n");
         exit(0);
     }
 }
@@ -105,27 +109,25 @@ void moveVarToVariable(char name, char nameToUpdate) {
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
-        int sizeName = sizeof(symbolTable[i].size) / sizeof(char);
-        int sizeNTU = sizeof(symbolTable[j].size) / sizeof(char);
-        if(sizeName == sizeNTU) {
-            symbolTable[j].value = symbolTable[i].value;
+        if(symbolTable[i].size > symbolTable[j].size) {
+            printf("You are attempting to move to a variable that is of smaller size");
+            exit(0);    
         }
+    } else {
+        printf("Variable isn't declared!\n");
+        exit(0);
     }
 }
 
-void moveValToVariable(int num, char name) { 
+void moveValToVariable(int num, char name) { ;
     if(isVariableDeclared(name)) {
         int i = getIndex(name);
-        int variableSize = sizeof(symbolTable[i].size) / sizeof(char);
-        if(variableSize == numDigits(num)){
-            symbolTable[i].value = num;
-        }
-        else {
+        if(symbolTable[i].size < numDigits(num)){
             printf("Variable isn't compatible with this integer size");
+            exit(0);
         }
-    }
-    else {
-        printf("Variable isn't declared!");
+    } else {
+        printf("Variable isn't declared!\n");
         exit(0);
     }
 } 
@@ -144,6 +146,7 @@ int sizeOfSymbolTable() {
 }
 
 int main(void) {
+    indexOfSymbolTable = 0;
     return yyparse();
 }
 
