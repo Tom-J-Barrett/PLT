@@ -27,13 +27,14 @@ struct VAR {
     int size;
     char name;
 };
+int indexOfSymbolTable;
 struct VAR symbolTable[100];
 void addVariable(int size, char name);
 void moveValToVariable(int num, char name);
 void moveVarToVariable(char name, char nameToUpdate);
 bool isVariableDeclared(char name);
 int sizeOfSymbolTable();
-#line 19 "parser.y"
+#line 20 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -42,7 +43,7 @@ int sizeOfSymbolTable();
 #define YYSTYPE_IS_DECLARED 1
 typedef union {int size; char name; int num;} YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 46 "y.tab.c"
+#line 47 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -231,7 +232,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 79 "parser.y"
+#line 80 "parser.y"
 
 int getIndex(char name) {
     for(int i = 0; i < sizeOfSymbolTable(); i++) {
@@ -245,10 +246,11 @@ void addVariable(int size, char name) {
         struct VAR newVariable;
         newVariable.size = size;
         newVariable.name = name;
-        symbolTable[0] = newVariable;
+        symbolTable[indexOfSymbolTable] = newVariable;
+        indexOfSymbolTable++;
     }
     else {
-        printf("Already Declared");
+        printf("Already Declared\n");
         exit(0);
     }
 }
@@ -279,6 +281,7 @@ void moveValToVariable(int num, char name) { ;
         int i = getIndex(name);
         if(symbolTable[i].size < numDigits(num)){
             printf("Variable isn't compatible with this integer size");
+            exit(0);
         }
     } else {
         printf("Variable isn't declared!\n");
@@ -300,6 +303,7 @@ int sizeOfSymbolTable() {
 }
 
 int main(void) {
+    indexOfSymbolTable = 0;
     return yyparse();
 }
 
@@ -308,7 +312,7 @@ void yyerror (char *s) {
 }
 
 
-#line 312 "y.tab.c"
+#line 316 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -511,94 +515,94 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 40 "parser.y"
+#line 41 "parser.y"
 	{;}
 break;
 case 2:
-#line 43 "parser.y"
+#line 44 "parser.y"
 	{exit(0);}
 break;
 case 3:
-#line 46 "parser.y"
-	{;}
-break;
-case 4:
 #line 47 "parser.y"
 	{;}
 break;
-case 5:
+case 4:
 #line 48 "parser.y"
 	{;}
 break;
-case 6:
+case 5:
 #line 49 "parser.y"
 	{;}
 break;
+case 6:
+#line 50 "parser.y"
+	{;}
+break;
 case 7:
-#line 52 "parser.y"
+#line 53 "parser.y"
 	{;}
 break;
 case 8:
-#line 55 "parser.y"
+#line 56 "parser.y"
 	{;}
 break;
 case 9:
-#line 56 "parser.y"
+#line 57 "parser.y"
 	{isVariableDeclared(yystack.l_mark[-1].name);}
 break;
 case 10:
-#line 57 "parser.y"
-	{;}
-break;
-case 11:
 #line 58 "parser.y"
 	{;}
 break;
-case 12:
+case 11:
 #line 59 "parser.y"
 	{;}
 break;
-case 13:
+case 12:
 #line 60 "parser.y"
 	{;}
 break;
-case 14:
+case 13:
 #line 61 "parser.y"
 	{;}
 break;
-case 15:
+case 14:
 #line 62 "parser.y"
 	{;}
 break;
+case 15:
+#line 63 "parser.y"
+	{;}
+break;
 case 16:
-#line 65 "parser.y"
+#line 66 "parser.y"
 	{moveValToVariable(yystack.l_mark[-2].num, yystack.l_mark[0].name);}
 break;
 case 17:
-#line 66 "parser.y"
+#line 67 "parser.y"
 	{moveVarToVariable(yystack.l_mark[-2].name, yystack.l_mark[0].name);}
 break;
 case 18:
-#line 69 "parser.y"
+#line 70 "parser.y"
 	{addVariable(yystack.l_mark[-2].size, yystack.l_mark[-1].name);}
 break;
 case 19:
-#line 72 "parser.y"
-	{;}
-break;
-case 20:
 #line 73 "parser.y"
 	{;}
 break;
-case 21:
+case 20:
 #line 74 "parser.y"
 	{;}
 break;
-case 22:
+case 21:
 #line 75 "parser.y"
 	{;}
 break;
-#line 602 "y.tab.c"
+case 22:
+#line 76 "parser.y"
+	{;}
+break;
+#line 606 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

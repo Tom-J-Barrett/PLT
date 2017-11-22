@@ -8,6 +8,7 @@ struct VAR {
     int size;
     char name;
 };
+int indexOfSymbolTable;
 struct VAR symbolTable[100];
 void addVariable(int size, char name);
 void moveValToVariable(int num, char name);
@@ -89,10 +90,11 @@ void addVariable(int size, char name) {
         struct VAR newVariable;
         newVariable.size = size;
         newVariable.name = name;
-        symbolTable[0] = newVariable;
+        symbolTable[indexOfSymbolTable] = newVariable;
+        indexOfSymbolTable++;
     }
     else {
-        printf("Already Declared");
+        printf("Already Declared\n");
         exit(0);
     }
 }
@@ -104,7 +106,6 @@ int numDigits(int n) {
 }
 
 void moveVarToVariable(char name, char nameToUpdate) {
-    printf("%c %c", name, nameToUpdate);
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
@@ -145,6 +146,7 @@ int sizeOfSymbolTable() {
 }
 
 int main(void) {
+    indexOfSymbolTable = 0;
     return yyparse();
 }
 
