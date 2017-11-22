@@ -15,6 +15,8 @@ void moveValToVariable(int num, char name);
 void moveVarToVariable(char name, char nameToUpdate);
 bool isVariableDeclared(char name);
 int sizeOfSymbolTable();
+void canUse(char name);
+void canAdd(char name, char name2);
 %}
 
 %union {int size; char name; int num;} 
@@ -54,13 +56,13 @@ bodyStatement   :BODY FULLSTOP line {;}
                 ;
 
 line            :PRINT toPrint FULLSTOP         {;}
-                |INPUT VARNAME FULLSTOP {isVariableDeclared($2);}
+                |INPUT VARNAME FULLSTOP {canUse($2);}
                 |MOVE movement FULLSTOP {;}
-                |ADD VARNAME TO VARNAME FULLSTOP {;}
+                |ADD VARNAME TO VARNAME FULLSTOP {canAdd($2, $4);}
                 |line PRINT toPrint FULLSTOP         {;}
-                |line INPUT VARNAME FULLSTOP {;}
+                |line INPUT VARNAME FULLSTOP {canUse($3);}
                 |line MOVE movement FULLSTOP {;}
-                |line ADD VARNAME TO VARNAME FULLSTOP {;} 
+                |line ADD VARNAME TO VARNAME FULLSTOP {canAdd($3, $5);} 
                 ;
 
 movement        :INTEGER TO VARNAME {moveValToVariable($1, $3);}
@@ -71,9 +73,9 @@ declaration     :VARSIZE VARNAME FULLSTOP {addVariable($1, $2);}
                 ;
 
 toPrint         :STRING {;}
-                |VARNAME {;}
+                |VARNAME {canUse($1);}
                 |STRING SEMICOLON toPrint {;}
-                |VARNAME SEMICOLON toPrint {;}
+                |VARNAME SEMICOLON toPrint {canUse($1);}
                 ;
 
 %%
@@ -139,6 +141,18 @@ bool isVariableDeclared(char name) {
         }
     }
     return false;
+}
+
+void canUse(char name) {
+    if(isVariableDeclared(name) == false) {
+        printf("Variable is not declared");
+        exit(0);
+    }
+}
+
+void canAdd(char name, char name2) {
+    canUse(name);
+    canUse(name2);
 }
 
 int sizeOfSymbolTable() {
