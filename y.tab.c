@@ -25,25 +25,28 @@ void yyerror(char *s);
 #include <string.h>
 struct VAR {
     int size;
-    char name;
+    char *name;
 };
 int indexOfSymbolTable;
 struct VAR symbolTable[100];
-void addVariable(int size, char name);
-void moveValToVariable(int num, char name);
-void moveVarToVariable(char name, char nameToUpdate);
-bool isVariableDeclared(char name);
+void addVariable(int size, char *name);
+void moveValToVariable(int num, char *name);
+void moveVarToVariable(char *name, char *nameToUpdate);
+bool isVariableDeclared(char *name);
 int sizeOfSymbolTable();
-#line 20 "parser.y"
+void canUse(char *name);
+void canAdd(char *name, char *name2);
+extern int yylineno;
+#line 23 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-typedef union {int size; char name; int num;} YYSTYPE;
+typedef union {int size; char *name; int num;} YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 47 "y.tab.c"
+#line 50 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -232,16 +235,16 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 80 "parser.y"
+#line 83 "parser.y"
 
-int getIndex(char name) {
+int getIndex(char *name) {
     for(int i = 0; i < sizeOfSymbolTable(); i++) {
         if(name == symbolTable[i].name) 
             return i;
     }
 }
 
-void addVariable(int size, char name) { 
+void addVariable(int size, char *name) { 
     if(isVariableDeclared(name) == false) {
         struct VAR newVariable;
         newVariable.size = size;
@@ -250,7 +253,7 @@ void addVariable(int size, char name) {
         indexOfSymbolTable++;
     }
     else {
-        printf("Already Declared\n");
+        printf("Line %d: Variable Already Declared\n", yylineno);
         exit(0);
     }
 }
@@ -261,41 +264,53 @@ int numDigits(int n) {
     return 1 + numDigits(n/10);
 }
 
-void moveVarToVariable(char name, char nameToUpdate) {
-    printf("%c %c", name, nameToUpdate);
+void moveVarToVariable(char *name, char *nameToUpdate) {
     if(isVariableDeclared(name) && isVariableDeclared(nameToUpdate)) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
         if(symbolTable[i].size > symbolTable[j].size) {
-            printf("You are attempting to move to a variable that is of smaller size");
+            printf("Line %d: You are attempting to move to a variable that is of smaller size\n", yylineno);
             exit(0);    
         }
     } else {
-        printf("Variable isn't declared!\n");
+        printf("Line %d: Variable isn't declared!\n", yylineno);
         exit(0);
     }
 }
 
-void moveValToVariable(int num, char name) { ;
+void moveValToVariable(int num, char *name) { ;
     if(isVariableDeclared(name)) {
         int i = getIndex(name);
         if(symbolTable[i].size < numDigits(num)){
-            printf("Variable isn't compatible with this integer size");
+            printf("Line %d: Variable isn't compatible with this integer size\n", yylineno);
             exit(0);
         }
     } else {
-        printf("Variable isn't declared!\n");
+        printf("Line %d: Variable isn't declared!\n", yylineno);
         exit(0);
     }
 } 
 
-bool isVariableDeclared(char name) {
-    for(int i = 0; i < sizeOfSymbolTable(); i++) {
-        if(symbolTable[i].name == name) {
-            return true;
+bool isVariableDeclared(char *name) {
+   for(int i = 0; i < sizeOfSymbolTable(); i++) {  
+        if(symbolTable[i].name != NULL) {
+            if(strcmp(symbolTable[i].name, name)==0)
+                return true;   
         }
     }
     return false;
+}
+
+void canUse(char *name) {
+    if(isVariableDeclared(name) == false) {
+        printf("Line %d: Variable is not declared\n", yylineno);
+        exit(0);
+    }
+}
+
+void canAdd(char *name, char *name2) {
+    canUse(name);
+    canUse(name2);
 }
 
 int sizeOfSymbolTable() {
@@ -307,12 +322,12 @@ int main(void) {
     return yyparse();
 }
 
-void yyerror (char *s) {
-    fprintf(stderr, "%s\n", s);
+void yyerror(char *s) {
+    fprintf(stderr, "Line %d: %s\n", yylineno, s);
 }
 
 
-#line 316 "y.tab.c"
+#line 331 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -515,94 +530,94 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 41 "parser.y"
+#line 44 "parser.y"
 	{;}
 break;
 case 2:
-#line 44 "parser.y"
+#line 47 "parser.y"
 	{exit(0);}
 break;
 case 3:
-#line 47 "parser.y"
-	{;}
-break;
-case 4:
-#line 48 "parser.y"
-	{;}
-break;
-case 5:
-#line 49 "parser.y"
-	{;}
-break;
-case 6:
 #line 50 "parser.y"
 	{;}
 break;
-case 7:
+case 4:
+#line 51 "parser.y"
+	{;}
+break;
+case 5:
+#line 52 "parser.y"
+	{;}
+break;
+case 6:
 #line 53 "parser.y"
 	{;}
 break;
-case 8:
+case 7:
 #line 56 "parser.y"
 	{;}
 break;
-case 9:
-#line 57 "parser.y"
-	{isVariableDeclared(yystack.l_mark[-1].name);}
-break;
-case 10:
-#line 58 "parser.y"
-	{;}
-break;
-case 11:
+case 8:
 #line 59 "parser.y"
 	{;}
 break;
-case 12:
+case 9:
 #line 60 "parser.y"
-	{;}
+	{canUse(yystack.l_mark[-1].name);}
 break;
-case 13:
+case 10:
 #line 61 "parser.y"
 	{;}
 break;
-case 14:
+case 11:
 #line 62 "parser.y"
-	{;}
+	{canAdd(yystack.l_mark[-3].name, yystack.l_mark[-1].name);}
 break;
-case 15:
+case 12:
 #line 63 "parser.y"
 	{;}
 break;
-case 16:
+case 13:
+#line 64 "parser.y"
+	{canUse(yystack.l_mark[-1].name);}
+break;
+case 14:
+#line 65 "parser.y"
+	{;}
+break;
+case 15:
 #line 66 "parser.y"
+	{canAdd(yystack.l_mark[-3].name, yystack.l_mark[-1].name);}
+break;
+case 16:
+#line 69 "parser.y"
 	{moveValToVariable(yystack.l_mark[-2].num, yystack.l_mark[0].name);}
 break;
 case 17:
-#line 67 "parser.y"
+#line 70 "parser.y"
 	{moveVarToVariable(yystack.l_mark[-2].name, yystack.l_mark[0].name);}
 break;
 case 18:
-#line 70 "parser.y"
+#line 73 "parser.y"
 	{addVariable(yystack.l_mark[-2].size, yystack.l_mark[-1].name);}
 break;
 case 19:
-#line 73 "parser.y"
-	{;}
-break;
-case 20:
-#line 74 "parser.y"
-	{;}
-break;
-case 21:
-#line 75 "parser.y"
-	{;}
-break;
-case 22:
 #line 76 "parser.y"
 	{;}
 break;
-#line 606 "y.tab.c"
+case 20:
+#line 77 "parser.y"
+	{canUse(yystack.l_mark[0].name);}
+break;
+case 21:
+#line 78 "parser.y"
+	{;}
+break;
+case 22:
+#line 79 "parser.y"
+	{canUse(yystack.l_mark[-2].name);}
+break;
+#line 621 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;

@@ -1,6 +1,7 @@
 %{
 #include "y.tab.h"
 #include <stdio.h>
+#include <string.h>
 %}
 
 DIGIT   [0-9]
@@ -9,6 +10,7 @@ ALNUM   [A-Za-z0-9]
 IDEN    [A-Za-z0-9\-]
 STRING  \"(\\.|[^"\\])*\" 
 InVar   [A-Za-z-]
+%option yylineno
 
 %%
 [\t\n ]+                {}
@@ -22,9 +24,11 @@ InVar   [A-Za-z-]
 (?i:END)                {return END;}
 [X]+                    {yylval.size = sizeOfChar(yytext); return VARSIZE;}
 {DIGIT}+                {yylval.num = atoi(yytext); return INTEGER;}
-{ALPHA}{IDEN}*          {yylval.name = yytext[0]; return VARNAME;}
+{ALPHA}{IDEN}*          {yylval.name = malloc(sizeof(char*) * strlen(yytext));
+                             strcpy(yylval.name, yytext); return VARNAME;}
 ;                       {return SEMICOLON;}
-{DIGIT}+{InVar}+{IDEN}* {return INVALIDNAME;}
+{DIGIT}+{InVar}+{IDEN}* {printf("Line %d: Invalid variable name.\n", yylineno);
+                            exit(0);}
 {STRING}                {return STRING;}
 \.                      {return FULLSTOP;}
 .                       {return INVALID;}
