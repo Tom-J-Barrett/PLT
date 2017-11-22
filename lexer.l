@@ -2,6 +2,7 @@
 #include "y.tab.h"
 #include <stdio.h>
 #include <string.h>
+int sizeOfChar(char* size);
 %}
 
 DIGIT   [0-9]

@@ -47,22 +47,23 @@ startOfProgram  :START FULLSTOP program ending {;}
 ending          :END FULLSTOP {exit(0);}
                 ;
 
-program         :declaration {;}
-                |program bodyStatement {;}
-                |bodyStatement  {;}
-                |program declaration {;}
+program         :declaration            {;}
+                |program bodyStatement  {;}
+                |bodyStatement          {;}
+                |program declaration    {;}
                 ;
 
-bodyStatement   :BODY FULLSTOP line {;}
+bodyStatement   :BODY FULLSTOP line     {;}
+                |BODY FULLSTOP          {;}
                 ;
 
-line            :PRINT toPrint FULLSTOP         {;}
-                |INPUT VARNAME FULLSTOP {canUse($2);}
-                |MOVE movement FULLSTOP {;}
-                |ADD VARNAME TO VARNAME FULLSTOP {canAdd($2, $4);}
-                |line PRINT toPrint FULLSTOP         {;}
-                |line INPUT VARNAME FULLSTOP {canUse($3);}
-                |line MOVE movement FULLSTOP {;}
+line            :PRINT toPrint FULLSTOP               {;}
+                |INPUT VARNAME FULLSTOP               {canUse($2);}
+                |MOVE movement FULLSTOP               {;}
+                |ADD VARNAME TO VARNAME FULLSTOP      {canAdd($2, $4);}
+                |line PRINT toPrint FULLSTOP          {;}
+                |line INPUT VARNAME FULLSTOP          {canUse($3);}
+                |line MOVE movement FULLSTOP          {;}
                 |line ADD VARNAME TO VARNAME FULLSTOP {canAdd($3, $5);} 
                 ;
 
@@ -73,10 +74,10 @@ movement        :INTEGER TO VARNAME {moveValToVariable($1, $3);}
 declaration     :VARSIZE VARNAME FULLSTOP {addVariable($1, $2);}
                 ;
 
-toPrint         :STRING {;}
-                |VARNAME {canUse($1);}
-                |STRING SEMICOLON toPrint {;}
-                |VARNAME SEMICOLON toPrint {canUse($1);}
+toPrint         :STRING                     {;}
+                |VARNAME                    {canUse($1);}
+                |STRING SEMICOLON toPrint   {;}
+                |VARNAME SEMICOLON toPrint  {canUse($1);}
                 ;
 
 %%
