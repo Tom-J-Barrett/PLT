@@ -14,9 +14,9 @@ void addVariable(int size, char *name);
 void moveValToVariable(int num, char *name);
 void moveVarToVariable(char *name, char *nameToUpdate);
 bool isVariableDeclared(char *name);
-int sizeOfSymbolTable();
 void canUse(char *name);
 void canAdd(char *name, char *name2);
+void canAddInteger(int num, char *name);
 extern int yylineno;
 %}
 
@@ -58,13 +58,21 @@ bodyStatement   :BODY FULLSTOP line     {;}
                 ;
 
 line            :PRINT toPrint FULLSTOP               {;}
-                |INPUT VARNAME FULLSTOP               {canUse($2);}
+                |INPUT inputStatement FULLSTOP        {;}
                 |MOVE movement FULLSTOP               {;}
-                |ADD VARNAME TO VARNAME FULLSTOP      {canAdd($2, $4);}
+                |ADD addStatement FULLSTOP            {;}
                 |line PRINT toPrint FULLSTOP          {;}
-                |line INPUT VARNAME FULLSTOP          {canUse($3);}
+                |line INPUT inputStatement FULLSTOP   {;}
                 |line MOVE movement FULLSTOP          {;}
-                |line ADD VARNAME TO VARNAME FULLSTOP {canAdd($3, $5);} 
+                |line ADD addStatement FULLSTOP       {;} 
+                ;
+
+addStatement    :VARNAME TO VARNAME     {canAdd($1, $3);}
+                |INTEGER TO VARNAME     {canAddInteger($1, $3);}
+                ;
+
+inputStatement  :VARNAME                            {canUse($1);}
+                |VARNAME SEMICOLON inputStatement   {canUse($1);}
                 ;
 
 movement        :INTEGER TO VARNAME {moveValToVariable($1, $3);}
@@ -83,9 +91,10 @@ toPrint         :STRING                     {;}
 %%
 
 int getIndex(char *name) {
-    for(int i = 0; i < sizeOfSymbolTable(); i++) {
-        if(name == symbolTable[i].name) 
+    for(int i = 0; i < 100; i++) {
+        if(strcmp(symbolTable[i].name, name)==0) { 
             return i;
+        }
     }
 }
 
@@ -137,10 +146,11 @@ void moveValToVariable(int num, char *name) { ;
 } 
 
 bool isVariableDeclared(char *name) {
-   for(int i = 0; i < sizeOfSymbolTable(); i++) {  
+   for(int i = 0; i < 100; i++) {  
         if(symbolTable[i].name != NULL) {
-            if(strcmp(symbolTable[i].name, name)==0)
+            if(strcmp(symbolTable[i].name, name)==0) {
                 return true;   
+            }
         }
     }
     return false;
@@ -158,8 +168,15 @@ void canAdd(char *name, char *name2) {
     canUse(name2);
 }
 
-int sizeOfSymbolTable() {
-    return (sizeof(symbolTable) / sizeof(symbolTable[0]));
+void canAddInteger(int num, char *name) {
+    canUse(name);
+    int i = getIndex(name);
+    if(symbolTable[i].size < numDigits(num)) {
+        printf("Line %d: Variable isn't compatible with this integer size\n",
+yylineno);
+        exit(0);
+    }
+
 }
 
 int main(void) {
