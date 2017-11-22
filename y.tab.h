@@ -20,6 +20,6 @@
 #endif
 #ifndef YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
-typedef union {int size; char name; int num;} YYSTYPE;
+typedef union {int size; char *name; int num;} YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
 extern YYSTYPE yylval;
