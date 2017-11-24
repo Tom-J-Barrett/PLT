@@ -123,8 +123,7 @@ void moveVarToVariable(char *name, char *nameToUpdate) {
         int i = getIndex(name);
         int j = getIndex(nameToUpdate);
         if(symbolTable[i].size > symbolTable[j].size) {
-            printf("Line %d: You are attempting to move to a variable that is of smaller size\n", yylineno);
-            exit(0);    
+            printf("Line %d: You are attempting to move to a variable that is of smaller size\n", yylineno);    
         }
     } else {
         printf("Line %d: Variable isn't declared!\n", yylineno);
@@ -137,7 +136,6 @@ void moveValToVariable(int num, char *name) { ;
         int i = getIndex(name);
         if(symbolTable[i].size < numDigits(num)){
             printf("Line %d: Variable isn't compatible with this integer size\n", yylineno);
-            exit(0);
         }
     } else {
         printf("Line %d: Variable isn't declared!\n", yylineno);
@@ -174,7 +172,6 @@ void canAddInteger(int num, char *name) {
     if(symbolTable[i].size < numDigits(num)) {
         printf("Line %d: Variable isn't compatible with this integer size\n",
 yylineno);
-        exit(0);
     }
 
 }
