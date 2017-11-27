@@ -1,5 +1,4 @@
 %{
-void yyerror(char *s);
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,6 +7,7 @@ struct VAR {
     int size;
     char *name;
 };
+void yyerror(char *s);
 int indexOfSymbolTable;
 struct VAR symbolTable[100];
 void addVariable(int size, char *name);
@@ -18,6 +18,8 @@ void canUse(char *name);
 void canAdd(char *name, char *name2);
 void canAddInteger(int num, char *name);
 extern int yylineno;
+extern int yylex();
+extern int yyparse();
 %}
 
 %union {int size; char *name; int num;} 

@@ -18,7 +18,6 @@
 #define YYPURE 0
 
 #line 2 "parser.y"
-void yyerror(char *s);
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -27,6 +26,7 @@ struct VAR {
     int size;
     char *name;
 };
+void yyerror(char *s);
 int indexOfSymbolTable;
 struct VAR symbolTable[100];
 void addVariable(int size, char *name);
@@ -37,7 +37,9 @@ void canUse(char *name);
 void canAdd(char *name, char *name2);
 void canAddInteger(int num, char *name);
 extern int yylineno;
-#line 23 "parser.y"
+extern int yylex();
+extern int yyparse();
+#line 25 "parser.y"
 #ifdef YYSTYPE
 #undef  YYSTYPE_IS_DECLARED
 #define YYSTYPE_IS_DECLARED 1
@@ -46,7 +48,7 @@ extern int yylineno;
 #define YYSTYPE_IS_DECLARED 1
 typedef union {int size; char *name; int num;} YYSTYPE;
 #endif /* !YYSTYPE_IS_DECLARED */
-#line 50 "y.tab.c"
+#line 52 "y.tab.c"
 
 /* compatibility with bison */
 #ifdef YYPARSE_PARAM
@@ -245,7 +247,7 @@ typedef struct {
 } YYSTACKDATA;
 /* variables for the parser stack */
 static YYSTACKDATA yystack;
-#line 92 "parser.y"
+#line 94 "parser.y"
 
 int getIndex(char *name) {
     for(int i = 0; i < 100; i++) {
@@ -343,7 +345,7 @@ void yyerror(char *s) {
 }
 
 
-#line 347 "y.tab.c"
+#line 349 "y.tab.c"
 
 #if YYDEBUG
 #include <stdio.h>		/* needed for printf */
@@ -546,114 +548,114 @@ yyreduce:
     switch (yyn)
     {
 case 1:
-#line 44 "parser.y"
+#line 46 "parser.y"
 	{;}
 break;
 case 2:
-#line 47 "parser.y"
+#line 49 "parser.y"
 	{exit(0);}
 break;
 case 3:
-#line 50 "parser.y"
-	{;}
-break;
-case 4:
-#line 51 "parser.y"
-	{;}
-break;
-case 5:
 #line 52 "parser.y"
 	{;}
 break;
-case 6:
+case 4:
 #line 53 "parser.y"
 	{;}
 break;
+case 5:
+#line 54 "parser.y"
+	{;}
+break;
+case 6:
+#line 55 "parser.y"
+	{;}
+break;
 case 7:
-#line 56 "parser.y"
+#line 58 "parser.y"
 	{;}
 break;
 case 8:
-#line 57 "parser.y"
+#line 59 "parser.y"
 	{;}
 break;
 case 9:
-#line 60 "parser.y"
-	{;}
-break;
-case 10:
-#line 61 "parser.y"
-	{;}
-break;
-case 11:
 #line 62 "parser.y"
 	{;}
 break;
-case 12:
+case 10:
 #line 63 "parser.y"
 	{;}
 break;
-case 13:
+case 11:
 #line 64 "parser.y"
 	{;}
 break;
-case 14:
+case 12:
 #line 65 "parser.y"
 	{;}
 break;
-case 15:
+case 13:
 #line 66 "parser.y"
 	{;}
 break;
-case 16:
+case 14:
 #line 67 "parser.y"
 	{;}
 break;
+case 15:
+#line 68 "parser.y"
+	{;}
+break;
+case 16:
+#line 69 "parser.y"
+	{;}
+break;
 case 17:
-#line 70 "parser.y"
+#line 72 "parser.y"
 	{canAdd(yystack.l_mark[-2].name, yystack.l_mark[0].name);}
 break;
 case 18:
-#line 71 "parser.y"
+#line 73 "parser.y"
 	{canAddInteger(yystack.l_mark[-2].num, yystack.l_mark[0].name);}
 break;
 case 19:
-#line 74 "parser.y"
+#line 76 "parser.y"
 	{canUse(yystack.l_mark[0].name);}
 break;
 case 20:
-#line 75 "parser.y"
+#line 77 "parser.y"
 	{canUse(yystack.l_mark[-2].name);}
 break;
 case 21:
-#line 78 "parser.y"
+#line 80 "parser.y"
 	{moveValToVariable(yystack.l_mark[-2].num, yystack.l_mark[0].name);}
 break;
 case 22:
-#line 79 "parser.y"
+#line 81 "parser.y"
 	{moveVarToVariable(yystack.l_mark[-2].name, yystack.l_mark[0].name);}
 break;
 case 23:
-#line 82 "parser.y"
+#line 84 "parser.y"
 	{addVariable(yystack.l_mark[-2].size, yystack.l_mark[-1].name);}
 break;
 case 24:
-#line 85 "parser.y"
-	{;}
-break;
-case 25:
-#line 86 "parser.y"
-	{canUse(yystack.l_mark[0].name);}
-break;
-case 26:
 #line 87 "parser.y"
 	{;}
 break;
-case 27:
+case 25:
 #line 88 "parser.y"
+	{canUse(yystack.l_mark[0].name);}
+break;
+case 26:
+#line 89 "parser.y"
+	{;}
+break;
+case 27:
+#line 90 "parser.y"
 	{canUse(yystack.l_mark[-2].name);}
 break;
-#line 657 "y.tab.c"
+#line 659 "y.tab.c"
     }
     yystack.s_mark -= yym;
     yystate = *yystack.s_mark;
